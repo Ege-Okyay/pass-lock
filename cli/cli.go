@@ -10,7 +10,7 @@ import (
 )
 
 var commands = map[string]types.Command{
-	"test": cmd.TestCommand,
+	"setup": cmd.SetupCommand,
 }
 
 func RunCommand(args []string) {
