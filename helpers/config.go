@@ -17,24 +17,45 @@ func GetAppDataPath() string {
 	return filepath.Join(appData, "passlock")
 }
 
-func SaveToFile(content, filename string) error {
-	return os.WriteFile(filename, []byte(content), 0644)
-}
-
-func LoadFromFile(filename string) (string, error) {
-	data, err := os.ReadFile(filename)
+func SaveToFile(content interface{}, filename string, aesKey []byte) error {
+	jsonContent, err := json.Marshal(content)
 	if err != nil {
-		return "", err
+		return err
 	}
-	return string(data), nil
+
+	encryptedContent, err := Encrypt(jsonContent, aesKey)
+	if err != nil {
+		return err
+	}
+
+	return os.WriteFile(filename, []byte(encryptedContent), 0644)
 }
 
-func AddDataEntry(aesKey []byte, key, value string) error {
-	dataFile := filepath.Join(GetAppDataPath(), "data.plock")
-	var entries []types.DataEntry
+func LoadFromFile(filename string, aesKey []byte) ([]types.PlockEntry, error) {
+	encryptedContent, err := os.ReadFile(filename)
+	if err != nil {
+		return nil, err
+	}
 
-	if content, err := LoadFromFile(dataFile); err == nil {
-		json.Unmarshal([]byte(content), &entries)
+	decryptedContent, err := Decrypt(string(encryptedContent), aesKey)
+	if err != nil {
+		return nil, err
+	}
+
+	var entries []types.PlockEntry
+	if err := json.Unmarshal([]byte(decryptedContent), &entries); err != nil {
+		return nil, err
+	}
+
+	return entries, nil
+}
+
+func AddDataEntry(aesKey []byte, filename, key, value string) error {
+	dataFile := filepath.Join(GetAppDataPath(), filename)
+	var entries []types.PlockEntry
+
+	if content, err := LoadFromFile(dataFile, aesKey); err == nil {
+		entries = content
 	}
 
 	encryptedValue, err := Encrypt([]byte(value), aesKey)
@@ -42,11 +63,9 @@ func AddDataEntry(aesKey []byte, key, value string) error {
 		return err
 	}
 
-	entries = append(entries, types.DataEntry{Key: key, Value: encryptedValue})
+	entries = append(entries, types.PlockEntry{Key: key, Value: encryptedValue})
 
-	jsonContent, _ := json.Marshal(entries)
-
-	return SaveToFile(string(jsonContent), dataFile)
+	return SaveToFile(entries, dataFile, aesKey)
 }
 
 func CheckKeysFileExists() (bool, error) {

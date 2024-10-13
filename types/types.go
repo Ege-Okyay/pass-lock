@@ -12,7 +12,7 @@ type CommandDistance struct {
 	Score int
 }
 
-type DataEntry struct {
+type PlockEntry struct {
 	Key   string `json:"key"`
 	Value string `json:"value"`
 }

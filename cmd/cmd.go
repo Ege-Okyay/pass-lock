@@ -4,7 +4,6 @@ import (
 	"fmt"
 	"log"
 	"os"
-	"path/filepath"
 
 	"github.com/Ege-Okyay/pass-lock/helpers"
 	"github.com/Ege-Okyay/pass-lock/types"
@@ -66,20 +65,18 @@ var SetupCommand = types.Command{
 				log.Fatalf("Error generating AES key: %v\n", err)
 			}
 
-			encryptedAESKey, err := helpers.Encrypt(aesKey, derivedKey)
-			if err != nil {
-				log.Fatalf("Error encrypting AES key: %v\n", err)
-			}
-
 			passlockDir := helpers.GetAppDataPath()
 
 			if err := os.MkdirAll(passlockDir, os.ModePerm); err != nil {
 				log.Fatalf("Error creating passlock directory: %v\n", err)
 			}
 
-			keysFile := filepath.Join(passlockDir, "keys.plock")
-			if err := helpers.SaveToFile(encryptedAESKey, keysFile); err != nil {
-				log.Fatalf("Error saving encrypted AES key: %v\n", err)
+			if err := helpers.AddDataEntry(derivedKey, "keys.plock", "aes_key", string(aesKey)); err != nil {
+				log.Fatalf("Error saving AES key: %v\n", err)
+			}
+
+			if err := helpers.AddDataEntry(derivedKey, "keys.plock", "password", password); err != nil {
+				log.Fatalf("Error saving password: %v\n", err)
 			}
 
 			fmt.Println()
