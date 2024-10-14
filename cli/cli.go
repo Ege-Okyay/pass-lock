@@ -11,7 +11,6 @@ import (
 )
 
 var commands = map[string]types.Command{
-	"help":  cmd.HelpCommand,
 	"setup": cmd.SetupCommand,
 	"set":   cmd.SetCommand,
 }
@@ -20,7 +19,12 @@ func Setup() {
 	args := os.Args[1:]
 
 	if len(args) == 0 {
-		cmd.HelpCommand.Execute([]string{})
+		PrintHelp()
+		return
+	}
+
+	if args[0] == "-h" || args[0] == "--help" || args[0] == "help" {
+		PrintHelp()
 		return
 	}
 
@@ -40,13 +44,45 @@ func Setup() {
 		return
 	}
 
+	if args[1] == "-h" || args[1] == "--help" {
+		PrintCommandHelp(cmd)
+		return
+	}
+
 	cmd.Execute(args[1:])
 }
 
-func PrintHelp(command types.Command) {
-	fmt.Printf("Name: %s\n", command.Name)
-	fmt.Printf("Description: %s\n", command.Description)
-	fmt.Printf("Usage: %s\n", command.Usage)
+func PrintHelp() {
+	helpers.PrintBanner("Passlock - Secure Key/Value Store")
+	fmt.Println("USAGE:")
+	fmt.Println("\tpasslock <command> [arguments]")
+
+	fmt.Println("AVAILABLE COMMANDS:")
+	for _, cmd := range commands {
+		fmt.Printf("\t%-15s %s\n", cmd.Name, cmd.Description)
+	}
+
+	fmt.Println("FLAGS:")
+	fmt.Println("\t-h, --help")
+
+	fmt.Println("EXAMPLES:")
+	fmt.Println("\tpasslock setup \tInitialize the vault with a master password.")
+	fmt.Println("\tpasslock set apiKey secret123 \tStore a new key-value pair.")
+	fmt.Println("\tpasslock get apiKey \tRetrive the value for the specified key.")
+	fmt.Println("\tpasslock delete apiKey \tDelete the specified key from the vault.")
+
+	fmt.Println("\nUse 'passlock <command> --help' for more information about a command.")
+}
+
+func PrintCommandHelp(cmd types.Command) {
+	fmt.Println("NAME:")
+	fmt.Printf("\t%s\n", cmd.Name)
+
+	fmt.Println("DESCRIPTION:")
+	fmt.Printf("\t%s\n", cmd.Description)
+
+	fmt.Println("USAGE:")
+	fmt.Printf("\t%s\n", cmd.Usage)
 }
 
 func FindClosestCommands(cmdName string, maxResults int) []string {
