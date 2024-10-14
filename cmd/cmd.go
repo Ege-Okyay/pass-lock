@@ -20,6 +20,15 @@ import (
 		- self-destruct
 */
 
+var HelpCommand = types.Command{
+	Name:        "help",
+	Description: "change this later",
+	Usage:       "passlock help",
+	Execute: func(args []string) {
+		fmt.Println("Hello World.")
+	},
+}
+
 var SetupCommand = types.Command{
 	Name:        "setup",
 	Description: "Set up your passlock with a new password.",
@@ -31,15 +40,13 @@ var SetupCommand = types.Command{
 		}
 
 		if exists {
-			fmt.Println("Setup already completed. Please use the 'set' command to add entries.")
+			helpers.ErrorMessage("Setup already completed. Please use the 'set' command to add entries.")
 			return
 		}
 
-		fmt.Println("=======================================")
-		fmt.Println("           Welcome to passlock!       ")
-		fmt.Println("=======================================")
-		fmt.Println("We will get started by creating a password.")
-		fmt.Println()
+		helpers.PrintBanner("Welcome to Passlock")
+		fmt.Println("Let's setup up your password manager.")
+		fmt.Println("\n🚀 Setup will begin shortly...")
 
 		for {
 			password, err := helpers.ReadPassword("Password: ")
@@ -48,7 +55,8 @@ var SetupCommand = types.Command{
 			}
 
 			if err := helpers.ValidateInput(password, "Password"); err != nil {
-				fmt.Println(err)
+				helpers.ErrorMessage(err.Error())
+				helpers.PrintSeparator()
 				continue
 			}
 
@@ -58,14 +66,14 @@ var SetupCommand = types.Command{
 			}
 
 			if err := helpers.ValidateInput(confirmPassword, "Confirmation password"); err != nil {
-				fmt.Println(err)
+				helpers.ErrorMessage(err.Error())
+				helpers.PrintSeparator()
 				continue
 			}
 
 			if password != confirmPassword {
-				fmt.Println()
-				fmt.Println("Passwords do not match! Please try again.")
-				fmt.Println("---------------------------------------")
+				helpers.ErrorMessage("Passwords do not match! Please try again.")
+				helpers.PrintSeparator()
 				continue
 			}
 
@@ -90,11 +98,9 @@ var SetupCommand = types.Command{
 				log.Fatalf("Error saving password: %v\n", err)
 			}
 
-			fmt.Println()
-			fmt.Println("=======================================")
-			fmt.Println("         Setup Complete!              ")
-			fmt.Println("=======================================")
-			fmt.Println("You can start using passlock by running 'passlock set <key> <value>'")
+			helpers.SuccessMessage("Setup Complete! Your vault is ready.")
+			fmt.Println("Use: 'passlock set <key> <value>' to add entries.")
+			helpers.PrintSeparator()
 			break
 		}
 	},
@@ -108,12 +114,14 @@ var SetCommand = types.Command{
 		key, value := args[0], args[1]
 
 		if err := helpers.ValidateInput(key, "Key"); err != nil {
-			fmt.Println(err)
+			helpers.ErrorMessage(err.Error())
+			helpers.PrintSeparator()
 			return
 		}
 
 		if err := helpers.ValidateInput(value, "Value"); err != nil {
-			fmt.Println(err)
+			helpers.ErrorMessage(err.Error())
+			helpers.PrintSeparator()
 			return
 		}
 
@@ -123,7 +131,8 @@ var SetCommand = types.Command{
 		}
 
 		if !exists {
-			fmt.Println("Setup is not completed. Please use the 'setup' command to setup passlock.")
+			helpers.ErrorMessage("Setup is not completed. Please use the 'setup' command to setup passlock.")
+			helpers.PrintSeparator()
 			return
 		}
 
@@ -137,7 +146,8 @@ var SetCommand = types.Command{
 
 			entries, err := helpers.LoadFromFile(filepath.Join(helpers.GetAppDataPath(), "keys.plock"), derivedKey)
 			if err != nil {
-				fmt.Println("Error loading keys file or incorrect password. Please try again.")
+				helpers.ErrorMessage("Incorrect password. Please try again.")
+				helpers.PrintSeparator()
 				continue
 			}
 
@@ -146,7 +156,8 @@ var SetCommand = types.Command{
 				if entry.Key == "password" {
 					storedPassword, err = helpers.Decrypt(entry.Value, derivedKey)
 					if err != nil {
-						fmt.Println("Incorrect password. Please try again.")
+						helpers.ErrorMessage("Incorrect password. Please try again.")
+						helpers.PrintSeparator()
 						continue
 					}
 					break
@@ -154,17 +165,18 @@ var SetCommand = types.Command{
 			}
 
 			if storedPassword == password {
-				fmt.Println("Password verified! Adding new entry...")
+				helpers.SuccessMessage("Password verified! Adding new entry...")
 
 				err := helpers.AddDataEntry(derivedKey, "data.plock", key, value)
 				if err != nil {
 					log.Fatalf("Error adding new entry: %v\n", err)
 				}
 
-				fmt.Println("Entry added successfully.")
+				helpers.SuccessMessage("Entry added successfully.")
 				break
 			} else {
-				fmt.Println("Incorrect password. Please try again.")
+				helpers.ErrorMessage("Incorrect password. Please try again.")
+				helpers.PrintSeparator()
 			}
 		}
 	},

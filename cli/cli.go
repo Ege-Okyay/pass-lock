@@ -2,6 +2,7 @@ package cli
 
 import (
 	"fmt"
+	"os"
 	"sort"
 
 	"github.com/Ege-Okyay/pass-lock/cmd"
@@ -10,11 +11,19 @@ import (
 )
 
 var commands = map[string]types.Command{
+	"help":  cmd.HelpCommand,
 	"setup": cmd.SetupCommand,
 	"set":   cmd.SetCommand,
 }
 
-func RunCommand(args []string) {
+func Setup() {
+	args := os.Args[1:]
+
+	if len(args) == 0 {
+		cmd.HelpCommand.Execute([]string{})
+		return
+	}
+
 	cmdName := args[0]
 	cmd, exists := commands[cmdName]
 
@@ -28,11 +37,6 @@ func RunCommand(args []string) {
 			fmt.Printf("\t%s\n", command)
 		}
 
-		return
-	}
-
-	if len(args) > 1 && args[1] == "help" {
-		PrintHelp(cmd)
 		return
 	}
 
