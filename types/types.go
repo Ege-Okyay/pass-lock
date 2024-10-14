@@ -4,6 +4,7 @@ type Command struct {
 	Name        string
 	Description string
 	Usage       string
+	ArgCount    int
 	Execute     func(args []string)
 }
 

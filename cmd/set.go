@@ -12,6 +12,7 @@ var SetCommand = types.Command{
 	Name:        "set",
 	Description: "change this later",
 	Usage:       "passlock set <key> <value>",
+	ArgCount:    2,
 	Execute: func(args []string) {
 		key, value := args[0], args[1]
 
