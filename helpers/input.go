@@ -30,7 +30,7 @@ func ValidateInput(input, fieldName string) error {
 	return nil
 }
 
-func VerifyPassword() ([]types.PlockEntry, []byte, error) {
+func VerifyPasswordAndLoadData(filename string) ([]types.PlockEntry, []byte, error) {
 	for {
 		password, err := ReadPassword("Password: ")
 		if err != nil {
@@ -39,29 +39,14 @@ func VerifyPassword() ([]types.PlockEntry, []byte, error) {
 
 		derivedKey := DeriveKey(password)
 
-		entries, err := LoadFromFile(filepath.Join(GetAppDataPath(), "keys.plock"), derivedKey)
+		filepath := filepath.Join(GetAppDataPath(), filename)
+		entries, err := LoadFromFile(filepath, derivedKey)
 		if err != nil {
 			ErrorMessage("Incorrect password. Please try again.")
 			PrintSeparator()
 			continue
 		}
 
-		for _, entry := range entries {
-			if entry.Key == "password" {
-				storedPassword, err := Decrypt(entry.Value, derivedKey)
-				if err != nil || storedPassword != password {
-					ErrorMessage("Incorrect password. Please try again.")
-					PrintSeparator()
-					continue
-				}
-
-				SuccessMessage("Password verified!")
-
-				return entries, derivedKey, nil
-			}
-		}
-
-		ErrorMessage("Master password not found. Please ensure setup is completed.")
-		return nil, nil, fmt.Errorf("master password missing")
+		return entries, derivedKey, nil
 	}
 }

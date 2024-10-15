@@ -1,5 +1,0 @@
-command_to_add:
-  - get
-  - get-all
-  - delete
-  - self-destruct

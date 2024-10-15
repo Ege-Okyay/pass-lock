@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"fmt"
 	"log"
-	"path/filepath"
 
 	"github.com/Ege-Okyay/pass-lock/helpers"
 	"github.com/Ege-Okyay/pass-lock/types"
@@ -27,21 +27,14 @@ var GetCommand = types.Command{
 			log.Fatalf("Error checking keys file: %v\n", err)
 		}
 		if !exists {
-			helpers.ErrorMessage("Setup is not completed. Please use the 'setup' command to setup passlock.")
+			helpers.ErrorMessage("Setup is not completed. Please use the 'setup' command to initialize.")
 			helpers.PrintSeparator()
 			return
 		}
 
-		_, derivedKey, err := helpers.VerifyPassword()
+		entries, derivedKey, err := helpers.VerifyPasswordAndLoadData("data.plock")
 		if err != nil {
 			log.Fatalf("Password verification failed: %v\n", err)
-		}
-
-		entries, err := helpers.LoadFromFile(filepath.Join(helpers.GetAppDataPath(), "data.plock"), derivedKey)
-		if err != nil {
-			helpers.ErrorMessage("Not sure what should I write here")
-			helpers.PrintSeparator()
-			return
 		}
 
 		for _, entry := range entries {
@@ -54,9 +47,11 @@ var GetCommand = types.Command{
 				}
 
 				helpers.SuccessMessage("Found the value!")
-
 				helpers.PrintBanner(storedEntry)
-
+				return
+			} else {
+				helpers.ErrorMessage(fmt.Sprintf("Key '%s' not found.", key))
+				helpers.PrintSeparator()
 				return
 			}
 		}
