@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path/filepath"
 
 	"github.com/Ege-Okyay/pass-lock/helpers"
 	"github.com/Ege-Okyay/pass-lock/types"
@@ -77,6 +78,11 @@ var SetupCommand = types.Command{
 
 			if err := helpers.AddDataEntry(derivedKey, "keys.plock", "password", password); err != nil {
 				log.Fatalf("Error saving password: %v\n", err)
+			}
+
+			dataFile := filepath.Join(passlockDir, "data.plock")
+			if _, err := os.Create(dataFile); err != nil {
+				log.Fatalf("Error creating data file: %v\n", err)
 			}
 
 			helpers.SuccessMessage("Setup Complete! Your vault is ready.")

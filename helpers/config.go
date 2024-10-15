@@ -32,6 +32,17 @@ func SaveToFile(content interface{}, filename string, aesKey []byte) error {
 }
 
 func LoadFromFile(filename string, aesKey []byte) ([]types.PlockEntry, error) {
+	fileInfo, err := os.Stat(filename)
+	if os.IsNotExist(err) {
+		return nil, nil
+	} else if err != nil {
+		return nil, err
+	}
+
+	if fileInfo.Size() == 0 {
+		return []types.PlockEntry{}, nil
+	}
+
 	encryptedContent, err := os.ReadFile(filename)
 	if err != nil {
 		return nil, err
