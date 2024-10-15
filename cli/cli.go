@@ -12,6 +12,7 @@ import (
 var commands = map[string]types.Command{
 	"setup": cmd.SetupCommand,
 	"set":   cmd.SetCommand,
+	"get":   cmd.GetCommand,
 }
 
 func Setup() {

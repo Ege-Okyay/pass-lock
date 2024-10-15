@@ -2,26 +2,21 @@ package cmd
 
 import (
 	"log"
+	"path/filepath"
 
 	"github.com/Ege-Okyay/pass-lock/helpers"
 	"github.com/Ege-Okyay/pass-lock/types"
 )
 
-var SetCommand = types.Command{
-	Name:        "set",
+var GetCommand = types.Command{
+	Name:        "get",
 	Description: "change this later",
-	Usage:       "passlock set <key> <value>",
-	ArgCount:    2,
+	Usage:       "passlock get <key>",
+	ArgCount:    1,
 	Execute: func(args []string) {
-		key, value := args[0], args[1]
+		key := args[0]
 
 		if err := helpers.ValidateInput(key, "Key"); err != nil {
-			helpers.ErrorMessage(err.Error())
-			helpers.PrintSeparator()
-			return
-		}
-
-		if err := helpers.ValidateInput(value, "Value"); err != nil {
 			helpers.ErrorMessage(err.Error())
 			helpers.PrintSeparator()
 			return
@@ -42,11 +37,28 @@ var SetCommand = types.Command{
 			log.Fatalf("Password verification failed: %v\n", err)
 		}
 
-		err = helpers.AddDataEntry(derivedKey, "data.plock", key, value)
+		entries, err := helpers.LoadFromFile(filepath.Join(helpers.GetAppDataPath(), "data.plock"), derivedKey)
 		if err != nil {
-			log.Fatalf("Error adding new entry: %v\n", err)
+			helpers.ErrorMessage("Not sure what should I write here")
+			helpers.PrintSeparator()
+			return
 		}
 
-		helpers.SuccessMessage("Entry added successfully.")
+		for _, entry := range entries {
+			if entry.Key == key {
+				storedEntry, err := helpers.Decrypt(entry.Value, derivedKey)
+				if err != nil {
+					helpers.ErrorMessage("I really don't know what this error should be")
+					helpers.PrintSeparator()
+					continue
+				}
+
+				helpers.SuccessMessage("Found the value!")
+
+				helpers.PrintBanner(storedEntry)
+
+				return
+			}
+		}
 	},
 }
