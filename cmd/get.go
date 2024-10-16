@@ -10,7 +10,7 @@ import (
 
 var GetCommand = types.Command{
 	Name:        "get",
-	Description: "change this later",
+	Description: "Retrive and display the specified key-value pair from the data vault.",
 	Usage:       "passlock get <key>",
 	ArgCount:    1,
 	Execute: func(args []string) {

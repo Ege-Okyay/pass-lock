@@ -9,7 +9,7 @@ import (
 
 var SetCommand = types.Command{
 	Name:        "set",
-	Description: "change this later",
+	Description: "Save a new key-value pair to the data vault.",
 	Usage:       "passlock set <key> <value>",
 	ArgCount:    2,
 	Execute: func(args []string) {
