@@ -23,7 +23,7 @@ var DeleteCommand = types.Command{
 			return
 		}
 
-		if helpers.VerifySetup() {
+		if !helpers.VerifySetup() {
 			return
 		}
 
