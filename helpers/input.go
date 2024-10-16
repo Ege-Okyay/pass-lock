@@ -71,3 +71,15 @@ func VerifyPasswordAndLoadData() ([]types.PlockEntry, []byte, error) {
 		return nil, nil, fmt.Errorf("master password missing")
 	}
 }
+
+func ReadLine() (string, error) {
+	var input string
+	_, err := fmt.Scanln(&input)
+	if err != nil {
+		if err.Error() == "unexpected newline" {
+			return "", nil
+		}
+		return "", err
+	}
+	return input, nil
+}

@@ -15,6 +15,7 @@ var commands = map[string]types.Command{
 	"get":     cmd.GetCommand,
 	"delete":  cmd.DeleteCommand,
 	"get-all": cmd.GetAllCommand,
+	"edit":    cmd.EditCommand,
 }
 
 func Setup() {
