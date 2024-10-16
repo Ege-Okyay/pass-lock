@@ -35,7 +35,6 @@ var SelfDestructCommand = types.Command{
 			log.Fatalf("Error reading input: %v\n", err)
 		}
 
-		// Trim any trailing newlines or spaces
 		input = helpers.TrimNewline(input)
 
 		if input != "sudo delete passlock" {
