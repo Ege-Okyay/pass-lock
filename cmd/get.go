@@ -22,8 +22,7 @@ var GetCommand = types.Command{
 			return
 		}
 
-		status := helpers.VerifySetup()
-		if !status {
+		if !helpers.VerifySetup() {
 			return
 		}
 

@@ -10,12 +10,13 @@ import (
 )
 
 var commands = map[string]types.Command{
-	"setup":   cmd.SetupCommand,
-	"set":     cmd.SetCommand,
-	"get":     cmd.GetCommand,
-	"delete":  cmd.DeleteCommand,
-	"get-all": cmd.GetAllCommand,
-	"edit":    cmd.EditCommand,
+	"setup":         cmd.SetupCommand,
+	"set":           cmd.SetCommand,
+	"get":           cmd.GetCommand,
+	"delete":        cmd.DeleteCommand,
+	"get-all":       cmd.GetAllCommand,
+	"edit":          cmd.EditCommand,
+	"self-destruct": cmd.SelfDestructCommand,
 }
 
 func Setup() {

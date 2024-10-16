@@ -14,8 +14,7 @@ var GetAllCommand = types.Command{
 	Usage:       "passlock get-all",
 	ArgCount:    0,
 	Execute: func(args []string) {
-		status := helpers.VerifySetup()
-		if !status {
+		if !helpers.VerifySetup() {
 			return
 		}
 

@@ -83,3 +83,7 @@ func ReadLine() (string, error) {
 	}
 	return input, nil
 }
+
+func TrimNewline(s string) string {
+	return strings.TrimSpace(s)
+}
