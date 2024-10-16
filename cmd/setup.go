@@ -12,7 +12,7 @@ import (
 
 var SetupCommand = types.Command{
 	Name:        "setup",
-	Description: "Set up your passlock with a new password.",
+	Description: "Initialize the vault with a master password.",
 	Usage:       "passlock setup",
 	ArgCount:    0,
 	Execute: func(args []string) {

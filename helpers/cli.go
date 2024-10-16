@@ -23,8 +23,11 @@ func PrintHelp(commands map[string]types.Command) {
 	fmt.Println("EXAMPLES:")
 	fmt.Println("\tpasslock setup \tInitialize the vault with a master password.")
 	fmt.Println("\tpasslock set apiKey secret123 \tStore a new key-value pair.")
-	fmt.Println("\tpasslock get apiKey \tRetrive the value for the specified key.")
-	fmt.Println("\tpasslock delete apiKey \tDelete the specified key from the vault.")
+	fmt.Println("\tpasslock get apiKey \tRetrive and display the specified key-value pair from the data vault.")
+	fmt.Println("\tpasslock get-all \tRetrive and display all key-value pairs from the data vault.")
+	fmt.Println("\tpasslock delete apiKey \tDelete a key-value pair from the vault.")
+	fmt.Println("\tpasslock edit apiKey \tEdit the value of an existing key.")
+	fmt.Println("\tpasslock self-destruct \tDelete all stored data and remove passlock configuration.")
 
 	fmt.Println("\nUse 'passlock <command> --help' for more information about a command.")
 }
