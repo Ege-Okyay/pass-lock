@@ -28,7 +28,7 @@ var SetupCommand = types.Command{
 
 		helpers.PrintBanner("Welcome to Passlock")
 		fmt.Println("Let's setup up your password manager.")
-		fmt.Println("\n🚀 Setup will begin shortly...")
+		fmt.Println("\nSetup will begin shortly...")
 
 		for {
 			password, err := helpers.ReadPassword("Password: ")
