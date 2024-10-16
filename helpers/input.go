@@ -3,6 +3,7 @@ package helpers
 import (
 	"errors"
 	"fmt"
+	"log"
 	"path/filepath"
 	"strings"
 	"syscall"
@@ -30,7 +31,7 @@ func ValidateInput(input, fieldName string) error {
 	return nil
 }
 
-func VerifyPasswordAndLoadData(filename string) ([]types.PlockEntry, []byte, error) {
+func VerifyPasswordAndLoadData() ([]types.PlockEntry, []byte, error) {
 	for {
 		password, err := ReadPassword("Password: ")
 		if err != nil {
@@ -39,14 +40,34 @@ func VerifyPasswordAndLoadData(filename string) ([]types.PlockEntry, []byte, err
 
 		derivedKey := DeriveKey(password)
 
-		filepath := filepath.Join(GetAppDataPath(), filename)
-		entries, err := LoadFromFile(filepath, derivedKey)
+		keysEntries, err := LoadFromFile(filepath.Join(GetAppDataPath(), "keys.plock"), derivedKey)
 		if err != nil {
 			ErrorMessage("Incorrect password. Please try again.")
 			PrintSeparator()
 			continue
 		}
 
-		return entries, derivedKey, nil
+		for _, entry := range keysEntries {
+			if entry.Key == "password" {
+				storedPassword, err := Decrypt(entry.Value, derivedKey)
+				if err != nil || storedPassword != password {
+					ErrorMessage("Incorrect password. Please try again.")
+					PrintSeparator()
+					continue
+				}
+
+				SuccessMessage("Password verified!")
+
+				dataEntries, err := LoadFromFile(filepath.Join(GetAppDataPath(), "data.plock"), derivedKey)
+				if err != nil {
+					log.Fatalf("Error occured while reading data.plock file: %v\n", err)
+				}
+
+				return dataEntries, derivedKey, nil
+			}
+		}
+
+		ErrorMessage("Master password not found. Please ensure setup is completed.")
+		return nil, nil, fmt.Errorf("master password missing")
 	}
 }

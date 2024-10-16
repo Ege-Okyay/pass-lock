@@ -22,17 +22,12 @@ var GetCommand = types.Command{
 			return
 		}
 
-		exists, err := helpers.CheckKeysFileExists()
-		if err != nil {
-			log.Fatalf("Error checking keys file: %v\n", err)
-		}
-		if !exists {
-			helpers.ErrorMessage("Setup is not completed. Please use the 'setup' command to initialize.")
-			helpers.PrintSeparator()
+		status := helpers.VerifySetup()
+		if !status {
 			return
 		}
 
-		entries, derivedKey, err := helpers.VerifyPasswordAndLoadData("data.plock")
+		entries, derivedKey, err := helpers.VerifyPasswordAndLoadData()
 		if err != nil {
 			log.Fatalf("Password verification failed: %v\n", err)
 		}

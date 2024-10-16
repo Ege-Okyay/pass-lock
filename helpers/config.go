@@ -93,3 +93,18 @@ func CheckKeysFileExists() (bool, error) {
 
 	return fileInfo.Size() > 0, nil
 }
+
+func VerifySetup() bool {
+	exists, err := CheckKeysFileExists()
+	if err != nil {
+		log.Fatalf("Error checking keys fiel: %v\n", err)
+	}
+	if !exists {
+		ErrorMessage("Setup is not completed. Please use the 'setup' command to initialize.")
+		PrintSeparator()
+
+		return false
+	}
+
+	return true
+}

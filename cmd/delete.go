@@ -23,17 +23,12 @@ var DeleteCommand = types.Command{
 			return
 		}
 
-		exists, err := helpers.CheckKeysFileExists()
-		if err != nil {
-			log.Fatalf("Error checking keys file: %v\n", err)
-		}
-		if !exists {
-			helpers.ErrorMessage("Setup not completed. Use 'passlock setup' to initialize.")
-			helpers.PrintSeparator()
+		status := helpers.VerifySetup()
+		if !status {
 			return
 		}
 
-		entries, derivedKey, err := helpers.VerifyPasswordAndLoadData("data.plock")
+		entries, derivedKey, err := helpers.VerifyPasswordAndLoadData()
 		if err != nil {
 			log.Fatalf("Password verification failed: %v\n", err)
 		}

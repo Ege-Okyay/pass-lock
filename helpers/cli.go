@@ -40,7 +40,7 @@ func PrintCommandHelp(cmd types.Command) {
 	fmt.Printf("\t%s\n", cmd.Usage)
 }
 
-func FindClosestCommands(commands map[string]types.Command, cmdName string, maxResults int) []string {
+func findClosestCommands(commands map[string]types.Command, cmdName string, maxResults int) []string {
 	str1 := []rune(cmdName)
 	var commandDistances []types.CommandDistance
 
@@ -64,7 +64,7 @@ func FindClosestCommands(commands map[string]types.Command, cmdName string, maxR
 }
 
 func HandleUnknownCommand(commands map[string]types.Command, cmdName string) {
-	closestCommands := FindClosestCommands(commands, cmdName, 2)
+	closestCommands := findClosestCommands(commands, cmdName, 2)
 
 	fmt.Printf("passlock: '%s' is not a passlock command. See 'passlock help'.\n", cmdName)
 	if len(closestCommands) > 0 {
