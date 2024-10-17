@@ -7,7 +7,7 @@ import (
 	"path/filepath"
 	"runtime"
 
-	"github.com/Ege-Okyay/pass-lock/types"
+	"github.com/Ege-Okyay/passlock/types"
 )
 
 // GetUserConfigDir returns the path to the user's configuration directory

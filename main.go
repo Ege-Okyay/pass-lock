@@ -1,7 +1,7 @@
 package main
 
 import (
-	"github.com/Ege-Okyay/pass-lock/cli"
+	"github.com/Ege-Okyay/passlock/cli"
 )
 
 // main is the entry point of the application. It triggers the CLI setup.

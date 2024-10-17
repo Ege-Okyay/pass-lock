@@ -8,7 +8,7 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/Ege-Okyay/pass-lock/types"
+	"github.com/Ege-Okyay/passlock/types"
 	"golang.org/x/term"
 )
 

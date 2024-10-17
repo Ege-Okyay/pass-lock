@@ -5,8 +5,8 @@ import (
 	"log"
 	"path/filepath"
 
-	"github.com/Ege-Okyay/pass-lock/helpers"
-	"github.com/Ege-Okyay/pass-lock/types"
+	"github.com/Ege-Okyay/passlock/helpers"
+	"github.com/Ege-Okyay/passlock/types"
 )
 
 // Command to delete a key-value pair from the vault.

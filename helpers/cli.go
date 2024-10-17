@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"sort"
 
-	"github.com/Ege-Okyay/pass-lock/types"
+	"github.com/Ege-Okyay/passlock/types"
 )
 
 // PrintHelp displays the general help message with a list of available commands,

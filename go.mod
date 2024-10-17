@@ -1,4 +1,4 @@
-module github.com/Ege-Okyay/pass-lock
+module github.com/Ege-Okyay/passlock
 
 go 1.23.0
 

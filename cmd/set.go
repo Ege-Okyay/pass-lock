@@ -3,8 +3,8 @@ package cmd
 import (
 	"log"
 
-	"github.com/Ege-Okyay/pass-lock/helpers"
-	"github.com/Ege-Okyay/pass-lock/types"
+	"github.com/Ege-Okyay/passlock/helpers"
+	"github.com/Ege-Okyay/passlock/types"
 )
 
 // Command to store a new key-value pair in the vault.
