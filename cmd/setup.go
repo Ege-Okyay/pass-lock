@@ -75,7 +75,7 @@ var SetupCommand = types.Command{
 			}
 
 			// Create the passlock data directory.
-			passlockDir := helpers.GetAppDataPath()
+			passlockDir := helpers.GetUserConfigDir()
 			if err := os.MkdirAll(passlockDir, os.ModePerm); err != nil {
 				log.Fatalf("Error creating passlock directory: %v\n", err)
 			}

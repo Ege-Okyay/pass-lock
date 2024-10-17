@@ -5,22 +5,34 @@ import (
 	"log"
 	"os"
 	"path/filepath"
+	"runtime"
 
 	"github.com/Ege-Okyay/pass-lock/types"
 )
 
-// GetAppDataPath retrieves the path to the 'passlock' folder inside the APPDATA directory.
-// If APPDATA is not set, the function logs a fatal error and exits.
-func GetAppDataPath() string {
-	// Retrieve the APPDATA environment variable.
-	appData := os.Getenv("APPDATA")
-	if appData == "" {
-		// Log and exit if APPDATA is not found.
-		log.Fatal("APPDATA environment variable not found.")
+// GetUserConfigDir returns the path to the user's configuration directory
+// for the application, handling different operating systems.
+func GetUserConfigDir() string {
+	var configDir string
+
+	// Determine the operating system
+	switch runtime.GOOS {
+	case "windows":
+		// Windows uses APPDATA environment variable
+		configDir = os.Getenv("APPDATA")
+		if configDir == "" {
+			log.Fatal("APPDATA environment variable not found.")
+		}
+	case "darwin":
+		// macOS uses a standard path in the user's home directory
+		configDir = filepath.Join(os.Getenv("HOME"), "Library", "Application Support")
+	case "linux":
+		configDir = filepath.Join(os.Getenv("HOME"), ".config")
+	default:
+		log.Fatalf("Unsupported operating system: %s", runtime.GOOS)
 	}
 
-	// Return the path to the 'passlock' directory.
-	return filepath.Join(appData, "passlock")
+	return filepath.Join(configDir, "passlock")
 }
 
 // SaveToFile encrypts the given content with the AES key and writes it to a file.
@@ -80,7 +92,7 @@ func LoadFromFile(filename string, aesKey []byte) ([]types.PlockEntry, error) {
 // AddDataEntry appends a new encrypted key-value pair to the specified data file.
 func AddDataEntry(aesKey []byte, filename, key, value string) error {
 	// Determine the full path to the data file.
-	dataFile := filepath.Join(GetAppDataPath(), filename)
+	dataFile := filepath.Join(GetUserConfigDir(), filename)
 
 	// Load existing entries from the file, if available.
 	var entries []types.PlockEntry
@@ -104,7 +116,7 @@ func AddDataEntry(aesKey []byte, filename, key, value string) error {
 // CheckKeysFileExists verifies whether the 'keys.plock' file exists and is not empty.
 func CheckKeysFileExists() (bool, error) {
 	// Get the full path to the keys file.
-	keysFile := filepath.Join(GetAppDataPath(), "keys.plock")
+	keysFile := filepath.Join(GetUserConfigDir(), "keys.plock")
 
 	// Check if the file exists; if not, return false.
 	if _, err := os.Stat(keysFile); os.IsNotExist(err) {

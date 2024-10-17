@@ -47,7 +47,7 @@ func VerifyPasswordAndLoadData() ([]types.PlockEntry, []byte, error) {
 		derivedKey := DeriveKey(password)
 
 		// Attempt to load the keys file using the derived key.
-		keysEntries, err := LoadFromFile(filepath.Join(GetAppDataPath(), "keys.plock"), derivedKey)
+		keysEntries, err := LoadFromFile(filepath.Join(GetUserConfigDir(), "keys.plock"), derivedKey)
 		if err != nil {
 			// Inform the user if the password is incorrect.
 			ErrorMessage("Incorrect password. Please try again.")
@@ -69,7 +69,7 @@ func VerifyPasswordAndLoadData() ([]types.PlockEntry, []byte, error) {
 				SuccessMessage("Password verified!")
 
 				// Load the data file with the same derived key.
-				dataEntries, err := LoadFromFile(filepath.Join(GetAppDataPath(), "data.plock"), derivedKey)
+				dataEntries, err := LoadFromFile(filepath.Join(GetUserConfigDir(), "data.plock"), derivedKey)
 				if err != nil {
 					log.Fatalf("Error occurred while reading data.plock file: %v\n", err)
 				}

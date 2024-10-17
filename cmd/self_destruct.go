@@ -47,7 +47,7 @@ var SelfDestructCommand = types.Command{
 		}
 
 		// Delete all data by removing the passlock directory.
-		passlockDir := helpers.GetAppDataPath()
+		passlockDir := helpers.GetUserConfigDir()
 		if err := os.RemoveAll(passlockDir); err != nil {
 			log.Fatalf("Failed to delete passlock directory: %v\n", err)
 		}

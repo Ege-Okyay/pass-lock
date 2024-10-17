@@ -55,7 +55,7 @@ var DeleteCommand = types.Command{
 		}
 
 		// Save the updated entries to the file.
-		err = helpers.SaveToFile(updatedEntries, filepath.Join(helpers.GetAppDataPath(), "data.plock"), derivedKey)
+		err = helpers.SaveToFile(updatedEntries, filepath.Join(helpers.GetUserConfigDir(), "data.plock"), derivedKey)
 		if err != nil {
 			log.Fatalf("Error saving updated entries: %v\n", err)
 		}

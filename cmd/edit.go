@@ -75,7 +75,7 @@ var EditCommand = types.Command{
 				entries[i].Value = encryptedValue
 
 				// Save the updated entries.
-				err = helpers.SaveToFile(entries, filepath.Join(helpers.GetAppDataPath(), "data.plock"), derivedKey)
+				err = helpers.SaveToFile(entries, filepath.Join(helpers.GetUserConfigDir(), "data.plock"), derivedKey)
 				if err != nil {
 					log.Fatalf("Error saving updated entry: %v\n", err)
 				}
