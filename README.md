@@ -93,11 +93,11 @@ Make sure you have the following installed:
 
 ## Project Report
 
-For a detailed explanation of the encryption strategies used in this project, check out the **project report**: [Work in progress](egeokyay.xyz)
+For a detailed explanation of the encryption strategies used in this project, check out the **project report**: [Work in progress](https://egeokyay.xyz)
 
 ## Video Explanation
 
-Watch the video walkthrough of the project to understand how it works: [Work in progress](egeokyay.xyz)
+Watch the video walkthrough of the project to understand how it works: [Work in progress](https://egeokyay.xyz)
 
 ## Contributing
 
