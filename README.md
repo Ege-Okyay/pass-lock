@@ -1,6 +1,6 @@
 # Passlock
 
-Users may safely save, manage, and retrieve their passwords with Pass-Lock, a command-line interface (CLI) password manager. It uses AES encryption to safeguard private information, guaranteeing security and privacy. This project prioritizes usability without sacrificing security and exemplifies excellent practices for encryption.
+Users may safely save, manage, and retrieve their passwords with Pass-Lock, a command-line interface (CLI) key-value store. It uses AES encryption to safeguard private information, guaranteeing security and privacy. This project prioritizes usability without sacrificing security and exemplifies excellent practices for encryption.
 
 ![Project Screenshot](assets/readme-screenshot.png)
 
