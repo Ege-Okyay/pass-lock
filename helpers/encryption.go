@@ -15,16 +15,6 @@ func DeriveKey(password string) []byte {
 	return hash[:]
 }
 
-// GenerateAESKey creates a random 256-bit AES encryption key.
-func GenerateAESKey() ([]byte, error) {
-	key := make([]byte, 32)
-	_, err := rand.Read(key) // Read random bytes into the key.
-	if err != nil {
-		return nil, err
-	}
-	return key, nil
-}
-
 // Encrypt encrypts the provided data using AES encryption in CFB mode.
 func Encrypt(data, key []byte) (string, error) {
 	block, err := aes.NewCipher(key) // Create a new AES cipher block.

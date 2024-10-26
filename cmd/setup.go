@@ -68,21 +68,10 @@ var SetupCommand = types.Command{
 			// Derive a cryptographic key from the password.
 			derivedKey := helpers.DeriveKey(password)
 
-			// Generate an AES encryption key.
-			aesKey, err := helpers.GenerateAESKey()
-			if err != nil {
-				log.Fatalf("Error generating AES key: %v\n", err)
-			}
-
 			// Create the passlock data directory.
 			passlockDir := helpers.GetUserConfigDir()
 			if err := os.MkdirAll(passlockDir, os.ModePerm); err != nil {
 				log.Fatalf("Error creating passlock directory: %v\n", err)
-			}
-
-			// Save the AES key in the keys file.
-			if err := helpers.AddDataEntry(derivedKey, "keys.plock", "aes_key", string(aesKey)); err != nil {
-				log.Fatalf("Error saving AES key: %v\n", err)
 			}
 
 			// Store the user's password securely.
