@@ -93,7 +93,7 @@ Make sure you have the following installed:
 
 ## Project Report
 
-For a detailed explanation of the encryption strategies used in this project, check out the **project report**: [Work in progress](https://egeokyay.xyz)
+For a detailed explanation of the encryption strategies used in this project, check out the **project report**: [Work in progress](https://egeokyay.xyz/documents/Encryption%20Strategies%20for%20Secure%20Key-Value%20Storage%20An%20Analysis%20of%20Modern%20Practices.pdf)
 
 ## Video Explanation
 
